@@ -1,0 +1,63 @@
+{
+  "name": "subto-command-center",
+  "version": "1.0.5",
+  "description": "SubTo Command Center - one desktop hub for deals, community and tools",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build:ui": "vite build",
+    "start": "vite build && electron .",
+    "test": "node --test test/*.test.js",
+    "dist": "npm run vendor && vite build && electron-builder --win nsis --x64",
+    "vendor": "esbuild scripts/exceljs-entry.js --bundle --platform=node --target=node20 --minify --outfile=electron/vendor/exceljs.js && esbuild scripts/vendor-entry-docs.js --bundle --platform=node --target=node20 --minify --external:canvas --external:path2d-polyfill --outfile=electron/vendor/docs.js && node -e \"require('fs').copyFileSync('node_modules/pdfjs-dist/legacy/build/pdf.worker.js','electron/vendor/pdf.worker.js')\""
+  },
+  "keywords": [],
+  "author": "Phillip",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "sql.js": "^1.13.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.5.0",
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8",
+    "esbuild": "^0.25.12",
+    "exceljs": "^4.4.0",
+    "pdfjs-dist": "^3.11.174",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "vite": "^6.3.5"
+  },
+  "productName": "SubTo Command Center",
+  "build": {
+    "appId": "com.phillip.subtocommandcenter",
+    "productName": "SubTo Command Center",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**",
+      "dist-renderer/**",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "SubTo Command Center",
+      "artifactName": "SubTo-Command-Center-Setup-${version}.exe",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "publish": null
+  }
+}
